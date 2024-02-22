@@ -1,0 +1,7 @@
+{
+    "FFlagGameBasicSettingsFramerateCap": true,
+    "FFlagEnableInGameMenuChromeABTest": false,
+    "DFIntCanHideGuiGroupId": 16194685,
+    "FFlagDebugGraphicsPreferVulkan":"true",
+    "FFlagDebugGraphicsDisableDirect3D11":"true"
+}
