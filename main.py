@@ -3,19 +3,34 @@ import psutil
 import os
 import fflags_updater
 import requests
+import re
 
 def open_roblox():
     print("Opening Roblox Player")
     os.system("open /Applications/Roblox.app")
 
 def close_roblox():
-    for proc in psutil.process_iter(['pid', 'name']):
-        if "roblox" in proc.info['name'].lower():
+    for proc in psutil.process_iter(["pid", "name"]):
+        if "roblox" in proc.info["name"].lower():
             print(f"Terminating Roblox Process (PID: {proc.info['pid']})")
-            os.kill(proc.info['pid'], 9)
+            os.kill(proc.info["pid"], 9)
 
 def update_fflags():
     fflags_updater.updateFFlags()
+
+behavior_map = {"F": "Fast", "DF": "Dynamic Fast", "SF": "Synchronized Fast"}
+type_map = {
+    "Flag": "bool",
+    "Int": "int",
+    "String": "string",
+    "Log": "byte",
+}
+type_editors = {
+    "bool": "Create BOOL editor",
+    "int": "Create INT editor",
+    "string": "Create STRING editor",
+    "byte": "Create BYTE editor",
+}
 
 def change_flags():
     flags_window = tk.Tk()
@@ -26,8 +41,10 @@ def change_flags():
     scrollbar = tk.Scrollbar(flags_window, orient="vertical", command=canvas.yview)
     scrollable_frame = tk.Frame(canvas)
 
-    scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-    
+    scrollable_frame.bind(
+        "<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+    )
+
     canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
     canvas.configure(yscrollcommand=scrollbar.set)
 
@@ -35,11 +52,34 @@ def change_flags():
     fflags_url = "https://raw.githubusercontent.com/MaximumADHD/Roblox-Client-Tracker/roblox/FVariables.txt"
     response = requests.get(fflags_url)
     flags_text = response.text
-    
+
     fflags = flags_text.splitlines()
 
-    flags_label = tk.Label(scrollable_frame, text=flags_text)
-    flags_label.pack()
+    # Process each FFlag entry
+    for fflag in fflags:
+        processed_fflag_name = re.sub(r"\[.*?\]\s", "", fflag)
+
+        behaviour = None
+        for behaviorId, behaviorName in behavior_map.items():
+            if processed_fflag_name.startswith(behaviorId):
+                behaviour = behaviorId
+        if not behaviour:
+            continue
+
+        fflag_name_without_behavior = processed_fflag_name[len(behaviour):]
+
+        data_type = None
+        for typeId, typeName in type_map.items():
+            if fflag_name_without_behavior.startswith(typeId):
+                data_type = typeName
+        if not data_type:
+            continue
+
+        fflag_real_name = fflag_name_without_behavior[len(data_type):]
+
+        editor_action = type_editors.get(data_type, "Create DEFAULT editor")
+
+        print(f"Flag: {data_type}, Name: {fflag_real_name}, Action: {editor_action}")
 
     canvas.pack(side="left", fill="both", expand=True)
     scrollbar.pack(side="right", fill="y")
@@ -64,8 +104,8 @@ change_flags_button.pack()
 
 # Put window on top
 window.lift()
-window.call('wm', 'attributes', '.', '-topmost', True)
-window.after_idle(window.call, 'wm', 'attributes', '.', '-topmost', False)
+window.call("wm", "attributes", ".", "-topmost", True)
+window.after_idle(window.call, "wm", "attributes", ".", "-topmost", False)
 
 # Run the main loop
 window.mainloop()
