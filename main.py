@@ -2,6 +2,7 @@ import tkinter as tk
 import psutil
 import os
 import fflags_updater
+import requests
 
 def open_roblox():
     print("Opening Roblox Player")
@@ -26,14 +27,14 @@ def change_flags():
     scrollable_frame = tk.Frame(canvas)
 
     scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-
+    
     canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
     canvas.configure(yscrollcommand=scrollbar.set)
 
-    # Read Flags from the text file
-    flags_text = ""
-    with open("FVariables.txt", "r") as file:
-        flags_text = file.read()
+    # Fetch Flags from the provided URL
+    fflags_url = "https://raw.githubusercontent.com/MaximumADHD/Roblox-Client-Tracker/roblox/FVariables.txt"
+    response = requests.get(fflags_url)
+    flags_text = response.text
 
     flags_label = tk.Label(scrollable_frame, text=flags_text)
     flags_label.pack()
