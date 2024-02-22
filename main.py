@@ -35,6 +35,8 @@ def change_flags():
     fflags_url = "https://raw.githubusercontent.com/MaximumADHD/Roblox-Client-Tracker/roblox/FVariables.txt"
     response = requests.get(fflags_url)
     flags_text = response.text
+    
+    fflags = flags_text.splitlines()
 
     flags_label = tk.Label(scrollable_frame, text=flags_text)
     flags_label.pack()
@@ -59,6 +61,11 @@ fflags_button.pack()
 
 change_flags_button = tk.Button(window, text="Change FFlags", command=change_flags)
 change_flags_button.pack()
+
+# Put window on top
+window.lift()
+window.call('wm', 'attributes', '.', '-topmost', True)
+window.after_idle(window.call, 'wm', 'attributes', '.', '-topmost', False)
 
 # Run the main loop
 window.mainloop()
