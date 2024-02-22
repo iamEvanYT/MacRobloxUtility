@@ -18,18 +18,16 @@ def close_roblox():
 def update_fflags():
     fflags_updater.updateFFlags()
 
-behavior_map = {"F": "Fast", "DF": "Dynamic Fast", "SF": "Synchronized Fast"}
+behavior_map = {
+    "F": "Fast",
+    "DF": "Dynamic Fast",
+    "SF": "Synchronized Fast"
+}
 type_map = {
     "Flag": "bool",
     "Int": "int",
     "String": "string",
     "Log": "byte",
-}
-type_editors = {
-    "bool": "Create BOOL editor",
-    "int": "Create INT editor",
-    "string": "Create STRING editor",
-    "byte": "Create BYTE editor",
 }
 
 def change_flags():
@@ -77,9 +75,12 @@ def change_flags():
 
         fflag_real_name = fflag_name_without_behavior[len(data_type):]
 
-        editor_action = type_editors.get(data_type, "Create DEFAULT editor")
-
-        print(f"Flag: {data_type}, Name: {fflag_real_name}, Action: {editor_action}")
+        print(f"Flag: {data_type}, Name: {fflag_real_name}, Datatype: {data_type}")
+        if data_type == "bool":
+            tk.Checkbutton(scrollable_frame, text=fflag_real_name).pack()
+        elif data_type == "int" or data_type == "string" or data_type == "byte":
+            tk.Label(scrollable_frame, text=fflag_real_name).pack()
+        tk.Entry(scrollable_frame).pack()
 
     canvas.pack(side="left", fill="both", expand=True)
     scrollbar.pack(side="right", fill="y")
