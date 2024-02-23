@@ -5,6 +5,15 @@ import fflags_updater
 import requests
 import re
 
+## FPS UNLOCKER OPTIONS ##
+# "FFlagGameBasicSettingsFramerateCap": true,
+# "DFIntTaskSchedulerTargetFps": 10000,
+
+## Force Vulkan Renderer ##
+# "FFlagDebugGraphicsDisableMetal": true,
+# "FFlagDebugGraphicsPreferVulkan":"true",
+# "FFlagDebugGraphicsDisableDirect3D11":"true"
+
 def open_roblox():
     print("Opening Roblox Player")
     os.system("open /Applications/Roblox.app")
@@ -29,6 +38,45 @@ type_map = {
     "String": "string",
     "Log": "byte",
 }
+
+found_fflags = {}
+def load_fflags():
+    # Fetch Flags from the provided URL
+    fflags_url = "https://raw.githubusercontent.com/MaximumADHD/Roblox-Client-Tracker/roblox/FVariables.txt"
+    response = requests.get(fflags_url)
+    flags_text = response.text
+
+    fflags = flags_text.splitlines()
+
+    # Process each FFlag entry
+    for fflag in fflags:
+        processed_fflag_name = re.sub(r"\[.*?\]\s", "", fflag)
+
+        behaviour = None
+        for behaviorId, behaviorName in behavior_map.items():
+            if processed_fflag_name.startswith(behaviorId):
+                behaviour = behaviorId
+        if not behaviour:
+            continue
+
+        # Synchronized Fast Flags can only be updated on the server
+        if (behaviour == "SF"):
+            continue
+
+        fflag_name_without_behavior = processed_fflag_name[len(behaviour):]
+
+        data_type = None
+        for typeId, typeName in type_map.items():
+            if fflag_name_without_behavior.startswith(typeId):
+                data_type = typeName
+        if not data_type:
+            continue
+
+        fflag_real_name = fflag_name_without_behavior[len(data_type):]
+
+        print(f"Flag: {data_type}, Name: {fflag_real_name}, Datatype: {data_type}")
+
+load_fflags()
 
 def change_flags():
     flags_window = tk.Tk()
@@ -64,6 +112,10 @@ def change_flags():
         if not behaviour:
             continue
 
+        # Synchronized Fast Flags can only be updated on the server
+        if (behaviour == "SF"):
+            continue
+
         fflag_name_without_behavior = processed_fflag_name[len(behaviour):]
 
         data_type = None
@@ -76,6 +128,7 @@ def change_flags():
         fflag_real_name = fflag_name_without_behavior[len(data_type):]
 
         print(f"Flag: {data_type}, Name: {fflag_real_name}, Datatype: {data_type}")
+        found_fflags[fflag_real_name] = data_type
         if data_type == "bool":
             tk.Checkbutton(scrollable_frame, text=fflag_real_name).pack()
         elif data_type == "int" or data_type == "string" or data_type == "byte":
