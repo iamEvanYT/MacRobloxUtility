@@ -10,7 +10,7 @@ It will just clone the repo
 
 #### Install requirements
 
-`pip install tkinter psutil requests alive-progress` or `pip3...`
+`pip install -r requirements.txt` or `pip3...`
 
 ### Pip
 `Not available`
@@ -23,3 +23,15 @@ It will just clone the repo
 ### If doesn't work, try
 `py main.py` or
 `python3 main.py`
+## Examples 👍
+### FPS Unlocker
+```json 
+"FFlagGameBasicSettingsFramerateCap": true,
+"DFIntTaskSchedulerTargetFps": 10000,
+```
+### Force Vulkan Renderer
+```json 
+"FFlagDebugGraphicsDisableMetal": true,
+"FFlagDebugGraphicsPreferVulkan":"true",
+"FFlagDebugGraphicsDisableDirect3D11":"true"
+```
