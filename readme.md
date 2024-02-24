@@ -20,7 +20,7 @@ It will just clone the repo
 
 `python main.py`
 
-### If doesn't work, try
+#### If doesn't work, try
 `py main.py` or
 `python3 main.py`
 ## Examples 👍
