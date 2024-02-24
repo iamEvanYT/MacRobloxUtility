@@ -12,6 +12,10 @@ It will just clone the repo
 
 `pip install -r requirements.txt` or `pip3...`
 
+For web interface
+
+`cd frontend && npm install`
+
 ### Pip
 `Not available`
 
@@ -23,6 +27,14 @@ It will just clone the repo
 #### If doesn't work, try
 `py main.py` or
 `python3 main.py`
+
+### Web interface
+Node + npm required
+Backend
+`flask --app web run`
+Frontend 
+`cd frontend && npm start`
+
 ## Examples 👍
 ### FPS Unlocker
 ```json 
