@@ -30,9 +30,13 @@ For web interface
 
 ### Web interface
 Node + npm required
+
 Backend
+
 `flask --app web run`
+
 Frontend 
+
 `cd frontend && npm start`
 
 ## Examples 👍
