@@ -1,9 +1,10 @@
 import psutil
 import os
+import subprocess
 
 def open_roblox():
     print("Opening Roblox Player")
-    os.system("open /Applications/Roblox.app")
+    subprocess.run(["open /Applications/Roblox.app"], check=True)
 
 def close_roblox():
     for proc in psutil.process_iter(["pid", "name"]):

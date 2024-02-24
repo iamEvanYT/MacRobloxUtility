@@ -1,7 +1,8 @@
 import os
 import json
+from os.path import abspath, dirname
 
-def getFflagsData(fflags_file_path=os.path.join(os.getcwd(),"/config/fflags.json")):
+def getFflagsData(fflags_file_path=dirname(abspath(__file__)) + "/config/fflags.json"):
     # Create a JSON file called ClientAppSettings.json in the ClientSettings folder
     fflags_data = {}
     if os.path.exists(fflags_file_path):
