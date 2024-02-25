@@ -97,11 +97,24 @@ function App() {
 		updateFFlags();
 	}, []);
 
+	const [checkedItems, setCheckedItems] = useState({});
+	const [textValues, setTextValues] = useState({});
+
+	const handleCheckboxChange = (index) => (event) => {
+		console.log('Setting to ', event.target.checked);
+		setCheckedItems({ ...checkedItems, [index]: event.target.checked });
+		console.log(checkedItems);
+	};
+
+	const handleTextChange = (index) => (event) => {
+		setTextValues({ ...textValues, [index]: event.target.value });
+	};
+
 	useEffect(() => {
 		setFFlagRender(
 			<FixedSizeList
-				height={300}
-				width={500}
+				height={500}
+				width={600}
 				itemCount={
 					searchResults.length === 0
 						? FFlags.length
@@ -126,7 +139,25 @@ function App() {
 							component="div"
 							disablePadding
 							secondaryAction={
-								fflag.type === 'bool' ? <Checkbox /> : null
+								fflag.type === 'bool' ? (
+									<Checkbox
+										checked={checkedItems[index] || false}
+										onChange={handleCheckboxChange(index)}
+									/>
+								) : (
+									<TextField
+										value={textValues[index] || ''}
+										onChange={(e) => {
+											if (fflag.type === 'int') {
+												if (parseInt(e.target.value)) {
+													handleTextChange(index)(e);
+												}
+											} else {
+												handleTextChange(index)(e);
+											}
+										}}
+									/>
+								)
 							}
 						>
 							<ListItemText sx={{ color: 'white' }}>
@@ -137,11 +168,13 @@ function App() {
 				}}
 			</FixedSizeList>
 		);
-	}, [searchResults, FFlags]);
+	}, [searchResults, FFlags, checkedItems, textValues]);
 
 	const searchFunc = (search) => {
 		if (search !== '') {
 			const results = searcher.search(search);
+			console.log('Searching');
+			console.log(results);
 			setSearchResults(results);
 		} else {
 			setSearchResults([]);
