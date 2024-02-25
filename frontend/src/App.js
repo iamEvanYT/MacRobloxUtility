@@ -93,8 +93,6 @@ function App() {
     }
   };
 
-  const applyFlags = () => {};
-
   useEffect(() => {
     updateFFlags();
   }, []);
@@ -110,6 +108,26 @@ function App() {
 
   const handleTextChange = (index) => (event) => {
     setTextValues({ ...textValues, [index]: event.target.value });
+  };
+
+  const applyFlags = async () => {
+    const body = {};
+    const temp = { ...checkedItems, ...textValues };
+    Object.entries(temp).forEach((val, index) => {
+      body[FFlags[index]["name"]] = parseInt(val[1])
+        ? parseInt(val[1])
+        : val[1];
+    });
+    const resp = await client.post("/updateFFlags", body);
+    if (resp.data.error) {
+      setSBSeverity("error");
+      setSBMessage(resp.data.error);
+      setSBOpen(true);
+    } else {
+      setSBSeverity("success");
+      setSBMessage(resp.data.message);
+      setSBOpen(true);
+    }
   };
 
   useEffect(() => {

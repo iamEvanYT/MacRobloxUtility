@@ -91,8 +91,11 @@ def getParsedFFLags():
 # Send only the FFLags to update
 def update_fflags_route():
     try:
-        with open("./flags/config/fflags.json", "rw") as config:
+        configPath = "./flags/config/fflags.json"
+        currentConfig = None
+        with open(configPath, "r") as config:
             currentConfig = json.loads(config.read())
+        with open(configPath, "w") as config:
             requestConfig = request.get_json(force=True) # Force to avoid to have the Content-Type: application/json header
             endConfig = merge_json(requestConfig, currentConfig)
             config.write(json.dumps(endConfig))
