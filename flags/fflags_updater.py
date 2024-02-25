@@ -38,16 +38,18 @@ def updateFFlags():
 
         print("ClientAppSettings.json has been created in the ClientSettings folder.")
     elif is_windows():
-        os.chdir(os.getenv("localappdata") + "/Roblox")
+        mainPath = os.getenv("localappdata") + "/Roblox"
 
-        client_settings_folder = "ClientSettings"
-        if not os.path.exists(client_settings_folder):
-            os.makedirs(client_settings_folder)
-            file_path = os.path.join(client_settings_folder, "ClientAppSettings.json")
-        
-        fflags_data = getFflagsData()
-        file_path = os.path.join(client_settings_folder, "ClientAppSettings.json") 
-        with open(file_path, "w") as file:
-            json.dump(fflags_data, file, indent=4)
+        for f in os.listdir(mainPath + "/Versions"):
+            if len(os.listdir(mainPath + "/Versions/" + f)) > 1:
+                client_settings_folder = f"{mainPath}/Versions/{f}/ClientSettings"
+                if not os.path.exists(client_settings_folder):
+                    os.makedirs(client_settings_folder)
+                    file_path = os.path.join(client_settings_folder, "ClientAppSettings.json")
+                
+                fflags_data = getFflagsData()
+                file_path = os.path.join(client_settings_folder, "ClientAppSettings.json") 
+                with open(file_path, "w") as file:
+                    json.dump(fflags_data, file, indent=4)
 
-        print("ClientAppSettings.json has been created in the ClientSettings folder.")
+                print("ClientAppSettings.json has been created in the ClientSettings folder.")
