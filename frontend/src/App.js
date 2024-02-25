@@ -5,7 +5,7 @@ import {
   Box,
   Button,
   Checkbox,
-  List,
+  Typography,
   ListItem,
   ListItemText,
   Snackbar,
@@ -92,6 +92,8 @@ function App() {
       setSearcher(tempSearcher);
     }
   };
+
+  const applyFlags = () => {};
 
   useEffect(() => {
     updateFFlags();
@@ -196,6 +198,10 @@ function App() {
           sx={{ p: 3, bgcolor: "#001e41", borderRadius: 5 }}
         >
           <Box display={"flex"} flexDirection={"column"}>
+            <Typography variant="h2" sx={{ color: "white" }}>
+              Flag Editor
+            </Typography>
+            <br />
             <TextField
               value={search}
               onChange={(e) => {
@@ -224,12 +230,21 @@ function App() {
               Open Roblox
             </Button>
             <Button
+              color="primary"
+              variant="contained"
+              onClick={applyFlags}
+              sx={{
+                m: 1,
+              }}
+            >
+              Apply Flags
+            </Button>
+            <Button
               color="error"
               variant="contained"
               onClick={closeRoblox}
               sx={{
                 color: "white",
-                m: 1,
               }}
             >
               Close Roblox
