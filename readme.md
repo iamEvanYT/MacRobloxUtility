@@ -1,43 +1,29 @@
 # Mac Roblox Utils
-### A roblox utility for mac
+### A Roblox Utility for mac
 #### Created by iamEvan
 
 ## Installation 🔽
-### Git Clone
+### git clone
 It will just clone the repo
 
 `git clone https://github.com/iamEvanYT/MacRobloxUtility.git`
 
 #### Install requirements⏬
 
-`pip install -r requirements.txt` or `pip3...`
+Backend
 
-For web interface🌐
+`pip3 install -r requirements.txt`
+
+Frontend
 
 `cd frontend && npm install`
 
-### Pip
-`Not available`
-
 ## Run ▶️ 🚀
-### Basic python 🐍
-
-`python main.py`
-
-#### If doesn't work, try
-`py main.py` or
 `python3 main.py`
 
-### Web interface 🌐
-Node + npm required
-
-Backend 🔙
-
-`flask --app web run`
-
-Frontend 📱
-
-`cd frontend && npm start`
+## Made with
+- Node.js (Frontend)
+- Python (Backend)
 
 ## Examples 👍
 ### FPS Unlocker🚀
