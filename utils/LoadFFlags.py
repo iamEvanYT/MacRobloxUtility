@@ -9,11 +9,12 @@ def loadFFLags():
     response = requests.get(fflags_url)
     flags_text = response.text
 
-    fflags = flags_text.splitlines()
+    processing_fflags = flags_text.splitlines()
+    fflags = []
 
     # Process each FFlag entry
-    with alive_bar(len(fflags)) as bar:
-        for fflag in fflags:
+    with alive_bar(len(processing_fflags)) as bar:
+        for fflag in processing_fflags:
             processed_fflag_name = re.sub(r"\[.*?\]\s", "", fflag)
 
             behaviour = None
@@ -38,6 +39,11 @@ def loadFFLags():
 
             fflag_real_name = fflag_name_without_behavior[len(data_type):]
             bar()
-            #print(f"Flag: {data_type}, Name: {fflag_real_name}, Datatype: {data_type}")
+            
+            fflags.append({
+                'behaviour': behaviour,
+                'name': processed_fflag_name,
+                'type': data_type
+            })
 
     return fflags

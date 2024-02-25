@@ -48,43 +48,12 @@ def get_fflags_route():
         return jsonify({'fflags': fflags})
     except Exception as e:
         return jsonify({'error': str(e)})
-
+    
+fflags =  loadFFLags()
 @app.route("/getParsedFFLags", methods=["GET"])
 def getParsedFFLags():
     try:
-        fflags =  loadFFLags()
-        temp = []
-        for fflag in fflags:
-            
-            processed_fflag_name = re.sub(r"\[.*?\]\s", "", fflag)
-
-            behaviour = None
-            for behaviorId, behaviorName in BEHAVIOR_MAP.items():
-                if processed_fflag_name.startswith(behaviorId):
-                    behaviour = behaviorId
-            if not behaviour:
-                continue
-
-            # Synchronized Fast Flags can only be updated on the server
-            if (behaviour == "SF"):
-                continue
-
-            fflag_name_without_behavior = processed_fflag_name[len(behaviour):]
-
-            data_type = None
-            for typeId, typeName in TYPE_MAP.items():
-                if fflag_name_without_behavior.startswith(typeId):
-                    data_type = typeName
-            if not data_type:
-                continue
-
-            fflag_real_name = fflag_name_without_behavior[len(data_type):]
-            temp.append({
-                'behaviour': behaviour,
-                'name': fflag_real_name,
-                'type': data_type
-            })
-        return jsonify({'fflags': temp})
+        return jsonify({'fflags': fflags})
     except Exception as e:
         return jsonify({'error': str(e)})
 
@@ -98,8 +67,7 @@ def update_fflags_route():
             currentConfig = json.loads(config.read())
         with open(configPath, "w") as config:
             requestConfig = request.get_json(force=True) # Force to avoid to have the Content-Type: application/json header
-            endConfig = merge_json(requestConfig, currentConfig)
-            config.write(json.dumps(endConfig))
+            config.write(json.dumps(requestConfig,indent=2))
         updateFFlags()
         return jsonify({'message': 'success'})
     except Exception as e:
