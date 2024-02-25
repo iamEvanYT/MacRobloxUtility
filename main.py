@@ -10,7 +10,7 @@
 import subprocess
 
 node_frontend_process = subprocess.Popen("npm start", cwd = "./frontend/", shell=True)
-python_backend_process = subprocess.Popen(["py", "web.py"]) # Py for python 1.12 python for python<1.12
+python_backend_process = subprocess.Popen(["python", "web.py"]) # Py for python 1.12 python for python<1.12
 
 try:
     while True:

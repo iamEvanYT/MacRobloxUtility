@@ -1,6 +1,4 @@
-import psutil
-import os
-import subprocess
+import os, subprocess, psutil
 
 def open_roblox():
     print("Opening Roblox Player")
