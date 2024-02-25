@@ -4,7 +4,7 @@ import subprocess
 
 def open_roblox():
     print("Opening Roblox Player")
-    subprocess.run(["open /Applications/Roblox.app"], check=True)
+    subprocess.run(["open", "/Applications/Roblox.app"], check=True)
 
 def close_roblox():
     for proc in psutil.process_iter(["pid", "name"]):

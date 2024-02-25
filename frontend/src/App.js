@@ -20,7 +20,7 @@ import Minisearch from 'minisearch';
 
 function App() {
 	const client = axios.create({
-		baseURL: 'http://localhost:5000',
+		baseURL: 'http://localhost:39457',
 	});
 	const [SBOpen, setSBOpen] = useState(false);
 	const [SBMessage, setSBMessage] = useState('');

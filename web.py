@@ -88,3 +88,5 @@ def getParsedFFLags():
 @app.route("/updateFFlags", methods=["GET"])
 def update_fflags_route():
     return jsonify({'message': 'WIP'})
+
+app.run(host='0.0.0.0', port=39457)

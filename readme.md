@@ -1,6 +1,6 @@
 # Mac Roblox Utils
 ### A roblox utility for mac
-#### Created by IAmEvan
+#### Created by iamEvan
 
 ## Installation 🔽
 ### Git Clone
