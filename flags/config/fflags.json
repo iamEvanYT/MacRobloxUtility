@@ -1,3 +1,4 @@
 {
-  "AccessCookiesWithUrlEnabled": false
+  "DFFlagAccessCookiesWithUrlEnabled": true,
+  "DFFlagAddAppVersionIntoV2POCStat": true
 }

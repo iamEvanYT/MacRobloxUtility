@@ -85,7 +85,6 @@ function App() {
       setSBOpen(true);
     } else {
       const fflags = resp.data.fflags;
-      setFFlags(fflags);
       setSBSeverity("success");
       setSBMessage("Successfully updated list of fflags!");
       setSBOpen(true);
@@ -97,9 +96,10 @@ function App() {
           ...v,
         });
       });
+      setFFlags(temp);
       const tempSearcher = new Minisearch({
-        fields: ["name", "behaviour", "type", "additionalName"],
-        storeFields: ["name", "behaviour", "type"],
+        fields: ["name", "behaviour", "type", "additionalName", "id"],
+        storeFields: ["name", "behaviour", "type", "id"],
       });
       tempSearcher.addAll(temp);
       setSearcher(tempSearcher);
@@ -127,7 +127,7 @@ function App() {
     const body = {};
     const temp = { ...checkedItems, ...textValues };
     Object.entries(temp).forEach((val, index) => {
-      body[FFlags[index]["name"]] = parseInt(val[1])
+      body[FFlags[parseInt(val[0])]["name"]] = parseInt(val[1])
         ? parseInt(val[1])
         : val[1];
     });
@@ -163,6 +163,7 @@ function App() {
           const fflag = (searchResults.length === 0 ? FFlags : searchResults)[
             index
           ];
+          const id = fflag.id;
           return (
             <ListItem
               style={style}
@@ -172,19 +173,19 @@ function App() {
               secondaryAction={
                 fflag.type === "bool" ? (
                   <Checkbox
-                    checked={checkedItems[index] || false}
-                    onChange={handleCheckboxChange(index)}
+                    checked={checkedItems[id] || false}
+                    onChange={handleCheckboxChange(id)}
                   />
                 ) : (
                   <TextField
-                    value={textValues[index] || ""}
+                    value={textValues[id] || ""}
                     onChange={(e) => {
                       if (fflag.type === "int") {
                         if (parseInt(e.target.value) || e.target.value === "") {
-                          handleTextChange(index)(e);
+                          handleTextChange(id)(e);
                         }
                       } else {
-                        handleTextChange(index)(e);
+                        handleTextChange(id)(e);
                       }
                     }}
                   />
