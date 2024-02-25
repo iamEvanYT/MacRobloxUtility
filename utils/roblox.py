@@ -12,7 +12,8 @@ def open_roblox():
     if is_windows():
         os.system('cmd /C "start roblox:///"')
     else:
-        subprocess.run(["open", "/Applications/Roblox.app"], check=True)
+        subprocess.call(["open","/Applications/Roblox.app/Contents/MacOS/RobloxPlayer"])
+        #subprocess.run(["open", "/Applications/Roblox.app"], check=True)
 
 def close_roblox():
     for proc in psutil.process_iter(["pid", "name"]):

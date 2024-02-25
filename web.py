@@ -41,14 +41,6 @@ def get_config_fflags_route():
     except Exception as e:
         return jsonify({'error': str(e)})
     
-@app.route("/getFFlags", methods=["GET"])
-def get_fflags_route():
-    try:
-        fflags =  loadFFLags()
-        return jsonify({'fflags': fflags})
-    except Exception as e:
-        return jsonify({'error': str(e)})
-    
 fflags =  loadFFLags()
 @app.route("/getParsedFFLags", methods=["GET"])
 def getParsedFFLags():
