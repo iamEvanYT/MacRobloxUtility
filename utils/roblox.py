@@ -1,8 +1,18 @@
-import os, subprocess, psutil
+import os, subprocess, psutil, platform
+
+def is_windows():
+    return platform.system() == "Windows"
+
+def is_mac():
+    return platform.system() == "Mac"
 
 def open_roblox():
     print("Opening Roblox Player")
-    subprocess.run(["open", "/Applications/Roblox.app"], check=True)
+    print("start roblox:///" if is_windows() else ["open", "/Applications/Roblox.app"])
+    if is_windows():
+        os.system('cmd /C "start roblox:///"')
+    else:
+        subprocess.run(["open", "/Applications/Roblox.app"], check=True)
 
 def close_roblox():
     for proc in psutil.process_iter(["pid", "name"]):
