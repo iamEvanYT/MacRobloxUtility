@@ -5,6 +5,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from utils.constants import *
 from utils.JsonUtils import merge_json
+from flags.fflags_updater import updateFFlags
 import re, json
 
 app = Flask(__name__)
@@ -99,6 +100,7 @@ def update_fflags_route():
             requestConfig = request.get_json(force=True) # Force to avoid to have the Content-Type: application/json header
             endConfig = merge_json(requestConfig, currentConfig)
             config.write(json.dumps(endConfig))
+        updateFFlags()
         return jsonify({'message': 'success'})
     except Exception as e:
         return jsonify({'error': str(e)})
