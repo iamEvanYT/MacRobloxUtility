@@ -33,6 +33,14 @@ def close_roblox_route():
     except Exception as e:
         return jsonify({'error': str(e)})
     
+@app.route("/bypassSingleRoblox", methods=["GET"])
+def bypass_single_roblox_limt():
+    try:
+        bypass_single_roblox()
+        return jsonify({'message': "success"})
+    except Exception as e:
+        return jsonify({'error': str(e)})
+    
 @app.route("/getConfigFFlags", methods=["GET"])
 def get_config_fflags_route():
     try:

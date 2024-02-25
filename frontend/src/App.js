@@ -51,6 +51,19 @@ function App() {
     }
   };
 
+  const bypassSingleRoblox = async () => {
+    const resp = await client.get("/bypassSingleRoblox");
+    if (resp.data.error) {
+      setSBSeverity("error");
+      setSBMessage(resp.data.error);
+      setSBOpen(true);
+    } else {
+      setSBSeverity("success");
+      setSBMessage("Successfully bypassed");
+      setSBOpen(true);
+    }
+  };
+
   const closeRoblox = async () => {
     const resp = await client.get("/closeRoblox");
     if (resp.data.error) {
@@ -266,6 +279,16 @@ function App() {
               }}
             >
               Close Roblox
+            </Button>
+            <Button
+              color="secondary"
+              variant="contained"
+              onClick={bypassSingleRoblox}
+              sx={{
+                color: "white",
+              }}
+            >
+              Setup Multi-Roblox
             </Button>
           </Box>
         </Box>

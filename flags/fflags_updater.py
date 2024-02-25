@@ -7,7 +7,7 @@ def is_windows():
     return platform.system() == "Windows"
 
 def is_mac():
-    return platform.system() == "Mac"
+    return platform.system() == "Darwin"
 
 def getFflagsData(fflags_file_path=dirname(abspath(__file__)) + "/config/fflags.json"):
     # Create a JSON file called ClientAppSettings.json in the ClientSettings folder
