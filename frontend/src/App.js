@@ -77,8 +77,12 @@ function App() {
     }
   };
 
+  const [checkedItems, setCheckedItems] = useState({});
+  const [textValues, setTextValues] = useState({});
+
   const updateFFlags = async () => {
     const resp = await client.get("/getParsedFFLags");
+    const resp2 = await client.get("/getConfigFFlags");
     if (resp.data.error) {
       setSBSeverity("error");
       setSBMessage(resp.data.error);
@@ -103,6 +107,16 @@ function App() {
       });
       tempSearcher.addAll(temp);
       setSearcher(tempSearcher);
+
+      const currentFFlags = resp2.data.fflags;
+      Object.entries(currentFFlags).forEach((v) => {
+        const index = temp.findIndex((obj) => obj.name === v[0]);
+        if (typeof v[1] === "boolean") {
+          setCheckedItems({ ...checkedItems, [index]: v[1] });
+        } else {
+          setTextValues({ ...textValues, [index]: v[1] });
+        }
+      });
     }
   };
 
@@ -110,13 +124,9 @@ function App() {
     updateFFlags();
   }, []);
 
-  const [checkedItems, setCheckedItems] = useState({});
-  const [textValues, setTextValues] = useState({});
-
   const handleCheckboxChange = (index) => (event) => {
     console.log("Setting to ", event.target.checked);
     setCheckedItems({ ...checkedItems, [index]: event.target.checked });
-    console.log(checkedItems);
   };
 
   const handleTextChange = (index) => (event) => {
