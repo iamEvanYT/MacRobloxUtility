@@ -23,7 +23,6 @@ def bypass_single_roblox():
 
 def open_roblox():
     print("Opening Roblox Player")
-    print("start roblox:///" if is_windows() else ["open", "/Applications/Roblox.app"])
     if is_windows():
         os.system('cmd /C "start roblox:///"')
     else:
