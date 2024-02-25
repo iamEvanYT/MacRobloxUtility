@@ -280,6 +280,7 @@ function App() {
             >
               Close Roblox
             </Button>
+            <br />
             <Button
               color="secondary"
               variant="contained"
