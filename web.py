@@ -1,13 +1,15 @@
 from utils.roblox import *
 from utils.LoadFFlags import loadFFLags
 from flags.fflags_updater import getFflagsData
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from utils.constants import *
-import re
+from utils.JsonUtils import merge_json
+import re, json
 
 app = Flask(__name__)
 
+# All these CORS shit things
 CORS(app)
 
 @app.route("/", methods=["GET"])
@@ -85,8 +87,17 @@ def getParsedFFLags():
     except Exception as e:
         return jsonify({'error': str(e)})
 
-@app.route("/updateFFlags", methods=["GET"])
+@app.route("/updateFFlags", methods=["POST"])
+# Send only the FFLags to update
 def update_fflags_route():
-    return jsonify({'message': 'WIP'})
+    try:
+        with open("./flags/config/fflags.json", "rw") as config:
+            currentConfig = json.loads(config.read())
+            requestConfig = request.get_json(force=True) # Force to avoid to have the Content-Type: application/json header
+            endConfig = merge_json(requestConfig, currentConfig)
+            config.write(json.dumps(endConfig))
+        return jsonify({'message': 'success'})
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
 app.run(host='0.0.0.0', port=39457)
