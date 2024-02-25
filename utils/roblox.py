@@ -1,4 +1,5 @@
 import os, subprocess, psutil, platform, time
+DEVNULL = subprocess.DEVNULL
 
 def is_windows():
     return platform.system() == "Windows"
@@ -23,11 +24,10 @@ def bypass_single_roblox():
 
 def open_roblox():
     print("Opening Roblox Player")
-    print("start roblox:///" if is_windows() else ["open", "/Applications/Roblox.app"])
     if is_windows():
         os.system('cmd /C "start roblox:///"')
     else:
-        subprocess.call(["open","/Applications/Roblox.app/Contents/MacOS/RobloxPlayer"])
+        subprocess.Popen("/Applications/Roblox.app/Contents/MacOS/RobloxPlayer; exit;", shell=True, stdout=DEVNULL, stderr=DEVNULL)
 
 def close_roblox():
     for proc in psutil.process_iter(["pid", "name"]):
