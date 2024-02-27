@@ -21,6 +21,9 @@ Frontend
 ## Run ▶️ 🚀
 `python3 main.py`
 
+## Stop ▶️ 🛑
+Close the Terminal
+
 ## Made with
 - Node.js (Frontend)
 - Python (Backend)
