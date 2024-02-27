@@ -1,4 +1,5 @@
 {
-  "FFlagGameBasicSettingsFramerateCap": true,
-  "DFIntCanHideGuiGroupId": 16194685
+  "DFIntCanHideGuiGroupId": 16194685,
+  "FFlagEnableAccountSwitchFeature": true,
+  "FFlagGameBasicSettingsFramerateCap": true
 }

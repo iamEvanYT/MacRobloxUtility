@@ -6,7 +6,7 @@ from flask_cors import CORS
 from utils.constants import *
 from utils.JsonUtils import merge_json
 from flags.fflags_updater import updateFFlags
-import re, json
+import json, os
 
 app = Flask(__name__)
 
@@ -61,12 +61,16 @@ def getParsedFFLags():
 # Send only the FFLags to update
 def update_fflags_route():
     try:
-        configPath = "./flags/config/fflags.json"
+        configPath = os.path.dirname(os.path.abspath(__file__)) + "/flags/config/fflags.json"
         currentConfig = None
         with open(configPath, "r") as config:
             currentConfig = json.loads(config.read())
         with open(configPath, "w") as config:
             requestConfig = request.get_json(force=True) # Force to avoid to have the Content-Type: application/json header
+            for key in list(requestConfig):
+                if (requestConfig[key] == False):
+                    del requestConfig[key]
+            print("requestConfig",requestConfig)
             config.write(json.dumps(requestConfig,indent=2))
         updateFFlags()
         return jsonify({'message': 'success'})

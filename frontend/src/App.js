@@ -109,12 +109,17 @@ function App() {
       setSearcher(tempSearcher);
 
       const currentFFlags = resp2.data.fflags;
+      
       Object.entries(currentFFlags).forEach((v) => {
-        const index = temp.findIndex((obj) => obj.name === v[0]);
-        if (typeof v[1] === "boolean") {
-          setCheckedItems({ ...checkedItems, [index]: v[1] });
+        const item = temp.find((obj) => obj.name === v[0]);
+        const index = item.id
+
+        if (v[1] == true) {
+          checkedItems[index] = v[1];
+          setCheckedItems(checkedItems);
         } else {
-          setTextValues({ ...textValues, [index]: v[1] });
+          textValues[index] = v[1];
+          setTextValues(textValues);
         }
       });
     }
@@ -125,8 +130,7 @@ function App() {
   }, []);
 
   const handleCheckboxChange = (index) => (event) => {
-    console.log("Setting to ", event.target.checked);
-    setCheckedItems({ ...checkedItems, [index]: event.target.checked });
+    setCheckedItems({ ...checkedItems, [index]: event.target.checked});
   };
 
   const handleTextChange = (index) => (event) => {
