@@ -1,4 +1,4 @@
 {
-  "DFFlagAccessCookiesWithUrlEnabled": true,
-  "DFFlagAddAppVersionIntoV2POCStat": true
+  "FFlagGameBasicSettingsFramerateCap": true,
+  "DFIntCanHideGuiGroupId": 16194685
 }
