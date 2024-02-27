@@ -42,4 +42,5 @@ Frontend
 - Every time you wanted to use it, click the `SETUP MULTI-ROBLOX` button.
 - Then click `Open Roblox` to open as many windows as you want!
 - Click Log Out to login to a new account on another window
+
 NOTE: Once you logged out, you cannot join any games using the pervious window, so make sure to join the game first!
