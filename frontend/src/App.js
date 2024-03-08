@@ -352,6 +352,8 @@ function App() {
           const fflag = FFlags[index];
           if (fflag.type === "bool") {
             setCheckedItems({ ...checkedItems, [index]: flag[1] });
+          } else {
+            setTextValues({ ...textValues, [index]: flag[1] });
           }
         }
       });
