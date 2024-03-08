@@ -38,6 +38,48 @@ function App() {
   const [searcher, setSearcher] = useState(null);
   const [fflagRender, setFFlagRender] = useState(null);
 
+  const [profiles, setProfiles] = useState([
+    {
+      name: "FPS Unlocker",
+      flags: {
+        FFlagGameBasicSettingsFramerateCap: true,
+      },
+    },
+    {
+      name: "Vulkan Renderer",
+      flags: {
+        FFlagDebugGraphicsDisableMetal: true,
+        FFlagDebugGraphicsPreferVulkan: true,
+      },
+    },
+  ]);
+  const [Psearch, setPSearch] = useState("");
+  const [PSearcher, setPSearcher] = useState(() => {
+    return [];
+  });
+  const [PSearchResults, setPSearchResults] = useState([]);
+
+  const pSearchFunc = (v) => {
+    console.log(PSearcher.search(v));
+    setPSearchResults(PSearcher.search(v));
+  };
+
+  useEffect(() => {
+    const a = [];
+    profiles.forEach(function (profile, i) {
+      a.push({ ...profile, id: i });
+    });
+    console.log(a);
+    setProfiles(a);
+
+    const tempSearcher = new Minisearch({
+      fields: ["name", "flags"],
+      idField: "id",
+    });
+    tempSearcher.addAll(a);
+    setPSearcher(tempSearcher);
+  }, []);
+
   const openRoblox = async () => {
     const resp = await client.get("/openRoblox");
     if (resp.data.error) {
@@ -109,10 +151,10 @@ function App() {
       setSearcher(tempSearcher);
 
       const currentFFlags = resp2.data.fflags;
-      
+
       Object.entries(currentFFlags).forEach((v) => {
         const item = temp.find((obj) => obj.name === v[0]);
-        const index = item.id
+        const index = item.id;
 
         if (v[1] == true) {
           checkedItems[index] = v[1];
@@ -130,7 +172,7 @@ function App() {
   }, []);
 
   const handleCheckboxChange = (index) => (event) => {
-    setCheckedItems({ ...checkedItems, [index]: event.target.checked});
+    setCheckedItems({ ...checkedItems, [index]: event.target.checked });
   };
 
   const handleTextChange = (index) => (event) => {
@@ -225,6 +267,183 @@ function App() {
     }
   };
 
+  function FlagEditor() {
+    return (
+      <Box
+        display={"flex"}
+        justifyContent={"center"}
+        alignItems={"center"}
+        flexDirection={"column"}
+        sx={{ p: 3, bgcolor: "#001e41", borderRadius: 5 }}
+      >
+        <Box display={"flex"} flexDirection={"column"}>
+          <Typography variant="h2" sx={{ color: "white" }}>
+            Flag Editor
+          </Typography>
+          <br />
+          <TextField
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              searchFunc(e.target.value);
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+          {fflagRender}
+        </Box>
+        <Box>
+          <Button
+            color="success"
+            variant="contained"
+            onClick={openRoblox}
+            sx={{
+              color: "white",
+            }}
+          >
+            Open Roblox
+          </Button>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={applyFlags}
+            sx={{
+              m: 1,
+            }}
+          >
+            Apply Flags
+          </Button>
+          <Button
+            color="error"
+            variant="contained"
+            onClick={closeRoblox}
+            sx={{
+              color: "white",
+            }}
+          >
+            Close Roblox
+          </Button>
+          <br />
+          <Button
+            color="secondary"
+            variant="contained"
+            onClick={bypassSingleRoblox}
+            sx={{
+              color: "white",
+            }}
+          >
+            Setup Multi-Roblox
+          </Button>
+        </Box>
+      </Box>
+    );
+  }
+
+  function Presets() {
+    const applyPreset = function (preset) {
+      Object.entries(preset.flags).forEach((flag) => {
+        const index = FFlags.findIndex((v) => v.name === flag[0]);
+        if (index !== -1) {
+          const fflag = FFlags[index];
+          if (fflag.type === "bool") {
+            setCheckedItems({ ...checkedItems, [index]: flag[1] });
+          }
+        }
+      });
+    };
+
+    return (
+      <Box
+        display={"flex"}
+        justifyContent={"center"}
+        alignItems={"center"}
+        flexDirection={"column"}
+        sx={{ p: 3, bgcolor: "#001e41", borderRadius: 5 }}
+      >
+        <Box display={"flex"} flexDirection={"column"}>
+          <Typography variant="h2" sx={{ color: "white" }}>
+            Presets
+          </Typography>
+          <br />
+          <TextField
+            value={Psearch}
+            onChange={(e) => {
+              setPSearch(e.target.value);
+              pSearchFunc(e.target.value);
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+          <Box
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            flexDirection={"column"}
+          >
+            {PSearchResults.length > 0
+              ? PSearchResults.map((result) => {
+                  const profile = profiles[result.id];
+                  return (
+                    <Box
+                      display={"flex"}
+                      justifyContent={"center"}
+                      alignItems={"center"}
+                    >
+                      <Typography variant="h6" sx={{ color: "white" }}>
+                        {profile.name}
+                      </Typography>
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        sx={{ m: 1.5 }}
+                        onClick={() => {
+                          applyPreset(profile);
+                        }}
+                      >
+                        Apply
+                      </Button>
+                    </Box>
+                  );
+                })
+              : profiles.map((profile) => {
+                  return (
+                    <Box
+                      display={"flex"}
+                      justifyContent={"center"}
+                      alignItems={"center"}
+                    >
+                      <Typography variant="h6" sx={{ color: "white" }}>
+                        {profile.name}
+                      </Typography>
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        sx={{ m: 1.5 }}
+                        onClick={() => {
+                          applyPreset(profile);
+                        }}
+                      >
+                        Apply
+                      </Button>
+                    </Box>
+                  );
+                })}
+          </Box>
+        </Box>
+      </Box>
+    );
+  }
+
   return (
     <Box style={{ width: "100%", height: "100%" }}>
       <Box
@@ -236,78 +455,8 @@ function App() {
           height: "100vh",
         }}
       >
-        <Box
-          display={"flex"}
-          justifyContent={"center"}
-          alignItems={"center"}
-          flexDirection={"column"}
-          sx={{ p: 3, bgcolor: "#001e41", borderRadius: 5 }}
-        >
-          <Box display={"flex"} flexDirection={"column"}>
-            <Typography variant="h2" sx={{ color: "white" }}>
-              Flag Editor
-            </Typography>
-            <br />
-            <TextField
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value);
-                searchFunc(e.target.value);
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            {fflagRender}
-          </Box>
-          <Box>
-            <Button
-              color="success"
-              variant="contained"
-              onClick={openRoblox}
-              sx={{
-                color: "white",
-              }}
-            >
-              Open Roblox
-            </Button>
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={applyFlags}
-              sx={{
-                m: 1,
-              }}
-            >
-              Apply Flags
-            </Button>
-            <Button
-              color="error"
-              variant="contained"
-              onClick={closeRoblox}
-              sx={{
-                color: "white",
-              }}
-            >
-              Close Roblox
-            </Button>
-            <br />
-            <Button
-              color="secondary"
-              variant="contained"
-              onClick={bypassSingleRoblox}
-              sx={{
-                color: "white",
-              }}
-            >
-              Setup Multi-Roblox
-            </Button>
-          </Box>
-        </Box>
+        <FlagEditor />
+        <Presets />
       </Box>
       <Snackbar
         onClose={() => {
