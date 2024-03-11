@@ -1,5 +1,4 @@
 {
   "DFIntCanHideGuiGroupId": 16194685,
-  "FFlagEnableAccountSwitchFeature": true,
-  "FFlagGameBasicSettingsFramerateCap": true
+  "FFlagDebugGraphicsPreferVulkan": true
 }

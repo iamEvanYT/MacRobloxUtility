@@ -41,6 +41,8 @@ def updateFFlags():
         mainPath = os.getenv("localappdata") + "/Roblox"
 
         for f in os.listdir(mainPath + "/Versions"):
+            if os.path.isfile(mainPath + "/Versions/" + f):
+                continue
             if len(os.listdir(mainPath + "/Versions/" + f)) > 1:
                 client_settings_folder = f"{mainPath}/Versions/{f}/ClientSettings"
                 if not os.path.exists(client_settings_folder):
